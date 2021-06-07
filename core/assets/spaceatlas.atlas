@@ -1,0 +1,195 @@
+
+spaceatlas.png
+size: 8192, 8192
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+Earth
+  rotate: false
+  xy: 2, 281
+  size: 1920, 1080
+  orig: 1920, 1080
+  offset: 0, 0
+  index: -1
+Space
+  rotate: false
+  xy: 2, 5211
+  size: 3840, 2160
+  orig: 3840, 2160
+  offset: 0, 0
+  index: -1
+Stars0
+  rotate: false
+  xy: 2, 1363
+  size: 3498, 1922
+  orig: 3498, 1922
+  offset: 0, 0
+  index: -1
+Stars1
+  rotate: false
+  xy: 3844, 5449
+  size: 3498, 1922
+  orig: 3498, 1922
+  offset: 0, 0
+  index: -1
+Stars2
+  rotate: false
+  xy: 2, 3287
+  size: 3498, 1922
+  orig: 3498, 1922
+  offset: 0, 0
+  index: -1
+attack
+  rotate: false
+  xy: 3502, 4252
+  size: 325, 235
+  orig: 325, 235
+  offset: 0, 0
+  index: -1
+attack1
+  rotate: false
+  xy: 4180, 5195
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
+attack2
+  rotate: false
+  xy: 7496, 7119
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+attack3
+  rotate: false
+  xy: 3844, 4606
+  size: 150, 125
+  orig: 150, 125
+  offset: 0, 0
+  index: -1
+attack4
+  rotate: false
+  xy: 3996, 4606
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
+continue
+  rotate: false
+  xy: 7344, 7221
+  size: 500, 150
+  orig: 500, 150
+  offset: 0, 0
+  index: -1
+exit
+  rotate: false
+  xy: 1924, 1211
+  size: 500, 150
+  orig: 500, 150
+  offset: 0, 0
+  index: -1
+lv1
+  rotate: false
+  xy: 3502, 4125
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
+lv2
+  rotate: false
+  xy: 7344, 6992
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+lv3
+  rotate: false
+  xy: 7846, 7246
+  size: 150, 125
+  orig: 150, 125
+  offset: 0, 0
+  index: -1
+lv4
+  rotate: false
+  xy: 2426, 1236
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
+menuL
+  rotate: false
+  xy: 3502, 4489
+  size: 340, 720
+  orig: 340, 720
+  offset: 0, 0
+  index: -1
+newGame
+  rotate: false
+  xy: 2, 129
+  size: 500, 150
+  orig: 500, 150
+  offset: 0, 0
+  index: -1
+now1
+  rotate: false
+  xy: 2, 2
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
+now2
+  rotate: false
+  xy: 7998, 7271
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+now3
+  rotate: false
+  xy: 4180, 5322
+  size: 150, 125
+  orig: 150, 125
+  offset: 0, 0
+  index: -1
+now4
+  rotate: false
+  xy: 4332, 5322
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
+planetMenu
+  rotate: false
+  xy: 3844, 4733
+  size: 334, 714
+  orig: 334, 714
+  offset: 0, 0
+  index: -1
+playerlv1
+  rotate: false
+  xy: 1924, 1084
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
+playerlv2
+  rotate: false
+  xy: 3844, 4504
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+playerlv3
+  rotate: false
+  xy: 7344, 7094
+  size: 150, 125
+  orig: 150, 125
+  offset: 0, 0
+  index: -1
+playerlv4
+  rotate: false
+  xy: 504, 154
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1
