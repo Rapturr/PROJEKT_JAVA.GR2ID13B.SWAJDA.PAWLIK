@@ -2,7 +2,13 @@ package com.niebo.project;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+/**
+ * Klasa, w której zapisany jest tryb gry (nowa gra, kontynuacja, wyjście)
+ */
 public class Menu {
+    /**
+     * @param menu
+     */
     public Boolean menu;
     private Boolean newGame;
     private Boolean continueGame;

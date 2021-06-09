@@ -28,7 +28,7 @@ public class DesktopLauncher {
 		config.width = 1280;
 		config.height = 720;
 		config.fullscreen = false;
-		config.title = "Odysehja";
+		config.title = "Plemiona Kosmiczne";
 		config.resizable = true;
 
 		/**

@@ -88,6 +88,13 @@ public class GameScreen extends InputAdapter implements Screen, InputProcessor {
         batch = new SpriteBatch();
     }
 
+    /**
+     * nadpisanie metody render z klasy Screen, wykonuje się cały czas w trakcie działania programu,
+     * wykonują się tu akcje takie, jak podstawowe ustawienia kamery, oraz odczyt działań użytkownika,
+     * takie jak kliknięcie myszką, lub naciśnięcie przycisku na klawiaturze.
+     * Odbywa się to za pomocą zaimplementowanej klasy InputProcessor.
+     * @param delta różnica czasu.
+     */
     @Override
     public void render(float delta) {
 
@@ -114,6 +121,10 @@ public class GameScreen extends InputAdapter implements Screen, InputProcessor {
         batch.end();
     }
 
+    /**
+     * Po naciśnięciu esc, przechodzimy do menu, dzieje się to przez wywołanie tej klasy
+     * zmienia ona zoom oraz położenie kamery, oraz w obiekcie menu zmienia tryb na menu.
+     */
     private void changeToMenu(){
         cameraX = 640;
         cameraY = 360;
@@ -127,11 +138,20 @@ public class GameScreen extends InputAdapter implements Screen, InputProcessor {
 
     }
 
+    /**
+     * służy do pozbycia się umieszczonych w niej obiektów
+     */
     @Override
     public void dispose() {
         batch.dispose();
         menu.cleanup();
     }
+
+    /**
+     * Wywoływana przy zmianie rozmiaru ekranu
+     * @param width szerokość ekranu
+     * @param height Wysokość ekranu
+     */
     //Not used
     @Override
     public void resize(int width, int height) {
@@ -166,6 +186,12 @@ public class GameScreen extends InputAdapter implements Screen, InputProcessor {
         return super.keyDown(keycode);
     }
 
+    /**
+     * wywołuje się, kiedy jakiś przycisk na klawiaturze zostanie podniesiony
+     * służy do rozpoznawania, czy wciśnięty został przycisk ESCAPE, jeśli tak, to wracamy do menu
+     * @param keycode przycisk, który został podniesiony
+     * @return zwraca podniesiony przycisk
+     */
     @Override
     public boolean keyUp(int keycode) {
         if(keycode == Input.Keys.ESCAPE && !menu.menu){
@@ -181,6 +207,15 @@ public class GameScreen extends InputAdapter implements Screen, InputProcessor {
         return super.keyTyped(character);
     }
 
+    /**
+     * Wywołana kiedy wciśniemy przycisk myszy
+     * służy nam do przemieszczania się po ekranie
+     * @param screenX pozycja myszy X
+     * @param screenY pozycja myszy Y
+     * @param pointer wskaźnik do zdarzenia
+     * @param button przycisk, który został wciśnięty
+     * @return zwraca to, co przyjmuje
+     */
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if(button == Input.Buttons.RIGHT){
@@ -190,6 +225,15 @@ public class GameScreen extends InputAdapter implements Screen, InputProcessor {
         return super.touchDown(screenX, screenY, pointer, button);
     }
 
+    /**
+     * wywoływana, kiedy przycisk myszy jest podniesiony
+     * pozycje klawiszy przekazujemy do metody obiektu menu, a jeśli jesteśmy w menu gry to wybieramy przyciski.
+     * @param screenX pozycja myszy X
+     * @param screenY pozycja myszy Y
+     * @param pointer wskaźnik do zdarzenia
+     * @param button przycisk, który został wciśnięty
+     * @return zwraca to, co przyjmuje
+     */
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         /*float xpos = (screenX * camera.zoom) - (screenX / camera.zoom) + screenX;
@@ -206,6 +250,13 @@ public class GameScreen extends InputAdapter implements Screen, InputProcessor {
         return super.touchUp(screenX, screenY, pointer, button);
     }
 
+    /**
+     * wywoływana przy przeciąganiu
+     * @param screenX pozycja X myszy
+     * @param screenY pozycja Y myszy
+     * @param pointer wskaźnik do zdarzenia
+     * @return zwraca to, co przyjmuje
+     */
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && !menu.menu)
@@ -219,6 +270,13 @@ public class GameScreen extends InputAdapter implements Screen, InputProcessor {
         return super.mouseMoved(screenX, screenY);
     }
 
+    /**
+     * wywoływana przy poruszeniu kółkiem myszy
+     * służy nam do wywołania funkcji zoomującej ekran
+     * @param amountX przesunięcie
+     * @param amountY przesunięcie
+     * @return zwraca to, co przyjmuje
+     */
     @Override
     public boolean scrolled(float amountX, float amountY) {
         if(!menu.menu)
@@ -228,6 +286,10 @@ public class GameScreen extends InputAdapter implements Screen, InputProcessor {
     }
 
 
+    /**
+     * Funkcja zoomująca ekran gry
+     * @param amountY przesunięcie kółka myszy
+     */
     private void scrollingCamera(float amountY){
         effectiveViewportWidth = camera.viewportWidth * camera.zoom;
         effectiveViewportHeight = camera.viewportHeight * camera.zoom;
@@ -254,6 +316,11 @@ public class GameScreen extends InputAdapter implements Screen, InputProcessor {
         camera.update();
     }
 
+    /**
+     * Funkcja przesuwająca ekran gry
+     * @param screenX pozycja myszy X
+     * @param screenY pozycja myszy Y
+     */
     private void dragCameraPosition(int screenX, int screenY){
         if(camera.position.x + effectiveViewportWidth/2 <= 3840 && camera.position.x - effectiveViewportWidth/2 >= 0){
             int diffX = screenX - prevX;
@@ -283,6 +350,11 @@ public class GameScreen extends InputAdapter implements Screen, InputProcessor {
         camera.update();
     }
 
+    /**
+     * Funkcja rozpoznaje, który przycisk w menu został naciśnięty.
+     * @param screenX pozycja myszy X
+     * @param screenY pozycja myszy Y
+     */
     private void menuButtons(int screenX, int screenY){
         if((screenX > (newGameX/menuCamera.viewportWidth)*100 && screenX <= ((newGameX/menuCamera.viewportHeight)*100 + width)) && ((screenY > WORLD_HEIGHT - (newGameY + height)) && (screenY <= WORLD_HEIGHT - newGameY))){
             batch.setProjectionMatrix(camera.combined);
@@ -303,6 +375,11 @@ public class GameScreen extends InputAdapter implements Screen, InputProcessor {
         }
     }
 
+    /**
+     * przekazuje pozycje myszy do metody touchPlanet w obiekcie menu
+     * @param screenX pozycja X
+     * @param screenY pozycja Y
+     */
     private void touchPlanet(int screenX, int screenY){
         menu.touchPlanet((screenX + (int) camera.position.x) - 640, (screenY - (int) camera.position.y) +360,(int)camera.position.y,WORLD_HEIGHT);
     }
