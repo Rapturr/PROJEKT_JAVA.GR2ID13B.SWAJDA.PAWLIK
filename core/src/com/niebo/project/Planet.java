@@ -92,9 +92,9 @@ public class Planet implements Input.TextInputListener {
         if (this.typ == 1)
             this.totalArmySize = 100;
         else if(this.typ == 5)
-            this.totalArmySize = (int) (Math.random() * 10) + 1;//100 + 100
+            this.totalArmySize = (int) (Math.random() * 100) + 100;//100 + 100
         else if(this.typ == 2 || this.typ == 6)
-            this.totalArmySize = (int) (Math.random() * 10) + 2;//300 + 200
+            this.totalArmySize = (int) (Math.random() * 300) + 200;//300 + 200
         else if(this.typ == 3 || this.typ == 7)
             this.totalArmySize = (int) (Math.random() * 1000) + 500;
         else
