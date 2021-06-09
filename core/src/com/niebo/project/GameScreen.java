@@ -13,62 +13,88 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 public class GameScreen extends InputAdapter implements Screen, InputProcessor {
     //handling graphics
     /**
-     * @param camera implementuje kamerę do gry
-     * @param menuCamera implementuje kamerę do menu gry
-     * @param WORLD_WIDTH szerokość ekranu
-     * @param WORLD_HEIGHT wysokosc ekranu
-     * @param cameraX położenie horyzontalne kamery
-     * @param cameraY położenie wertykalne kamery
-     * @param zoomAmount zmienna, którą pilnujemy przybliżenie gry
-     * @param goToMenu zmienna, która informuje nas, że nastąpiło przejście do menu
-     * @param prevX zmienna, w której przy przesuwaniu ekranu, zapisywana jest poprzednia pozycja horyzontalna ekranu
-     * @param prevY zmienna, w której przy przesuwaniu ekranu, zapisywana jest poprzednia pozycja wertykalna ekranu
-     * @param continueButtonX przechowuje pozycję X kamery, do której przechodzimy po naciśnięciu escape
-     * @param continueButtonY przechowuje pozycję Y kamery, do której przechodzimy po naciśnięciu escape
-     * @param batch inicjuje partię, która służy do rysowania kształtów na ekranie
-     * @param newGameX pozycja X przycisku new game
-     * @param newGameY pozycja Y przycisku new game
-     * @param continueX pozycja X przycisku continue
-     * @param continueY pozycja Y przycisku continue
-     * @param exitX pozycja X przycisku exit
-     * @param exitY pozycja Y przycisku exit
-     * @param width szerokość przycisków
-     * @param height wysokość przycisków
-     * @param menu tworzy obiekt klasy Menu
-     * @param effectiveViewportWidth szerokość ekranu (szerokość ekranu * zoom)
-     * @param effectiveViewportHeight wysokość ekranu (wysokość ekranu * zoom)
-     * @param gameMusic inicjowanie muzyki do gry
+     * implementuje kamerę do gry
      */
     OrthographicCamera camera;
+    /**
+     * implementuje kamerę do menu gry
+     */
     OrthographicCamera menuCamera;
-
+    /**
+     * WORLD_WIDTH szerokość ekranu
+     */
     private final int WORLD_WIDTH = 1280;
+    /**
+     * WORLD_HEIGHT wysokosc ekranu
+     */
     private final int WORLD_HEIGHT = 720;
-
+    /**
+     * cameraX położenie horyzontalne kamery
+     */
     private float cameraX = WORLD_WIDTH;
+    /**
+     * cameraY położenie wertykalne kamery
+     */
     private float cameraY = WORLD_HEIGHT;
-
+    /**
+     * zoomAmount zmienna, którą pilnujemy przybliżenie gry
+     */
     private float zoomAmount = 10;
-
+    /**
+     * goToMenu zmienna, która informuje nas, że nastąpiło przejście do menu
+     */
     private boolean goToMenu;
-
+    /**
+     * prevX zmienna, w której przy przesuwaniu ekranu, zapisywana jest poprzednia pozycja horyzontalna ekranu
+     */
     private int prevX;
+    /**
+     * prevY zmienna, w której przy przesuwaniu ekranu, zapisywana jest poprzednia pozycja wertykalna ekranu
+     */
     private int prevY;
-
+    /**
+     * continueButtonX przechowuje pozycję X kamery, do której przechodzimy po naciśnięciu escape
+     */
     private float continueButtonX;
+    /**
+     * continueButtonY przechowuje pozycję Y kamery, do której przechodzimy po naciśnięciu escape
+     */
     private float continueButtonY;
 
+    /**
+     * batch obiekt klasy SpriteBatch służy do rysowania kształtów na ekranie
+     */
     private final SpriteBatch batch;
 
     //Placement of buttons in the main menu
+    /**
+     * newGameX pozycja X przycisku new game
+     * newGameY pozycja Y przycisku new game
+     * continueX pozycja X przycisku continue
+     * continueY pozycja Y przycisku continue
+     * exitX pozycja X przycisku exit
+     * exitY pozycja Y przycisku exit
+     * width szerokość przycisków
+     * height wysokość przycisków
+     */
     int newGameX = 50, newGameY = WORLD_HEIGHT-150 , continueX = 50, continueY = WORLD_HEIGHT-300,
             exitX = 50, exitY = WORLD_HEIGHT-450, width = 250, height = 75;
     //menu
+    /**
+     * menu tworzy obiekt klasy Menu
+     */
     private final Menu menu;
-
+    /**
+     * effectiveViewportWidth szerokość ekranu (szerokość ekranu * zoom)
+     */
     float effectiveViewportWidth;
+    /**
+     * effectiveViewportHeight wysokość ekranu (wysokość ekranu * zoom)
+     */
     float effectiveViewportHeight;
-
+    /**
+     * gameMusic inicjowanie muzyki do gry
+     */
     Music gameMusic = Gdx.audio.newMusic(Gdx.files.internal("Space.mp3"));
 
 

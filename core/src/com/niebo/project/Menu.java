@@ -7,16 +7,27 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public class Menu {
     /**
-     * @param menu
+     * menu informuje, czy gra jest teraz w trybie menu
      */
     public Boolean menu;
+    /**
+     * newGame informuje, czy gra jest teraz w trybie newGame
+     */
     private Boolean newGame;
+    /**
+     * continueGame informuje, czy gra jest teraz w trybie continueGame
+     */
     private Boolean continueGame;
+    /**
+     * Tworzy obiekt klasy Space, która przechowuje metody związane z logiką gry
+     */
     private Space bg;
 
 
+    /**
+     * Konstruktor klasy main
+     */
     public Menu(){
-
         menu = true;
         newGame = false;
         continueGame = false;
@@ -24,6 +35,10 @@ public class Menu {
         rend();
     }
 
+    /**
+     * funkcja służąca do zmiany trybu gry
+     * @param choice przechowuje wybór trybu
+     */
     public void changeMenu(String choice){
         switch (choice) {
             case "menu":
@@ -48,6 +63,9 @@ public class Menu {
         rend();
     }
 
+    /**
+     * po wybraniu trybu gry, wykonujemy związane z nimi funkcje, w klasie space
+     */
     private void rend(){
         if(menu)
             if(this.bg == null)
@@ -67,22 +85,56 @@ public class Menu {
                 this.bg.generatePlanetPosition();
             }
         else if(continueGame){
-            this.bg.continueGame(1);
-            this.bg.loadPlanetPosition();
+            if(this.bg == null){
+                this.bg = new Space(1);
+                this.bg.loadPlanetPosition();
+            }
+            else{
+                this.bg.cleanup();
+                this.bg = new Space(1);
+                this.bg.loadPlanetPosition();
+            }
         }
     }
 
+    /**
+     * przekazuje batch do obiektu klasy Space, gdzie umieszczane będzie tło oraz obiekty na mapie
+     * @param batch obiekt batch przekazywany z klasy GameScreen
+     */
     public void MenuBackground(SpriteBatch batch){
         this.bg.batchWork(batch);
     }
+
+    /**
+     * Przekazuje położenie przycisków do klasy Space
+     * @param newGameX pozycja X przycisku new game
+     * @param newGameY pozycja Y przycisku new game
+     * @param continueX pozycja X przycisku continue
+     * @param continueY pozycja Y przycisku continue
+     * @param exitX pozycja X przycisku exit
+     * @param exitY pozycja Y przycisku exit
+     * @param width szerokość przycisków
+     * @param height wysokość przycisków
+     * @param batch obiekt batch
+     */
     public void buttonsPlacement(int newGameX, int newGameY, int continueX, int continueY, int exitX, int exitY, int width, int height, SpriteBatch batch){
         this.bg.spaceButtonsPlacement(newGameX, newGameY, continueX, continueY, exitX, exitY, width, height, batch);
     }
+
+    /**
+     * przekazywanie pozycji myszy, w celu sprawdzenia, czy najechała ona na obiekt na mapie
+     * @param screenX pozycja myszy X
+     * @param screenY pozycja myszy Y
+     * @param width szerokość ekranu
+     * @param height wysokość ekranu
+     */
     public void touchPlanet(int screenX, int screenY,int width,int height){
         this.bg.checkIfPlanetClicked(screenX, screenY, width, height);
     }
+    /**
+     * usuwanie obiektu bg klasy Space
+     */
     public void cleanup(){
         bg.cleanup();
     }
-
-    }
+}

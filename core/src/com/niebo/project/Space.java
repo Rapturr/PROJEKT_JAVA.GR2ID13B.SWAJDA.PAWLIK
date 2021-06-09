@@ -8,37 +8,83 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import javax.swing.*;
 
+/**
+ * Space to klasa, w której znajdują się akcje związane z obiektami na mapie (zaznaczanie, atakowanie itd.)
+ */
 public class Space {
+    /**
+     * różnica w odległości tła, potrzebna do zrobienia animowanego tła
+     */
     float backgroundOffset;
+    /**
+     * zmienna która mówi, które tło powinno być pokazane
+     */
     boolean gameBackground;
-
+    /**
+     * Inicjowanie atlasu tekstur
+     */
     private TextureAtlas textureAtlas;
+    /**
+     * tablica tekstur tła
+     */
     private TextureRegion[] background;
+    /**
+     * tablica tekstur planet
+     */
     private TextureRegion[] planets;
+    /**
+     * tablica tekstur przycisków
+     */
     private TextureRegion[] buttons;
-
+    /**
+     * tablica generowanych pozycji X planet
+     */
     private int[] tablicaX;
+    /**
+     * tablica generowanych pozycji Y planet
+     */
     private int[] tablicaY;
+    /**
+     * tablica generowanych typów planet
+     */
     private int[] tablicaPlanet;
-
+    /**
+     * zmienna, mówiąca czy ma być wykonywany atak
+     */
     private static boolean atakowana = false;
-
+    /**
+     * pomocnicza zmienna mówiąca, o tym czy jest to gracz.
+     */
     boolean isplayer;
+    /**
+     * obiekt klasy Player, reprezentujący gracza
+     */
     Player player;
+    /**
+     * obiekt klasy Player, reprezentujący przeciwnika
+     */
     Player enemy;
-
-    private FileHandle file;
-
+    /**
+     * tablica indeksów atakujących planet gracza
+     */
     int[] indeksAtakujacej = new int[60];
+    /**
+     * indeks planety atakowanej przeciwnika
+     */
     int indeksAtakowanej;
-
-    private static boolean atakAkcja = false;
-    private int[] wojna = new int[60];
-
+    /**
+     * ilość woisk, jaką gracz wpisał
+     */
     private int iloscWoiskAtakujacych = 0;
+    /**
+     * zmienna, przechowuje informacje o ataku(czy przeciwnik ma jeszcze jakieś woiska, czy został podbity)
+     */
     private int liczba = -1;
 
 
+    /**
+     * ładowanie tekstur
+     */
     private void loadTextures(){
         if(textureAtlas == null)
             textureAtlas = new TextureAtlas("Spaceatlas.atlas");
@@ -82,7 +128,10 @@ public class Space {
     }
 
 
-
+    /**
+     * konstruktor
+     * @param i mówi, o tym które tło powinno być generowane
+     */
     public Space(int i){
         loadTextures();
         this.gameBackground = i != 0;
@@ -94,25 +143,18 @@ public class Space {
         }
     }
 
-    public void continueGame(int i){
-        //this.gameBackground = true;
-        loadTextures();
-        String[] pozycje;
-        this.gameBackground = i != 0;
-        this.tablicaX = new int[50];
-        this.tablicaY = new int[50];
-        this.tablicaPlanet = new int[50];
-        for(int j=0; j<60; j++){
-            this.indeksAtakujacej[j] = -1;
-        }
-
-
-    }
-
+    /**
+     * przechodzimy w tej funkcji do renderBackground
+     * @param batch obiekt batch
+     */
     public void batchWork(SpriteBatch batch){
         renderBackground(batch);
     }
 
+    /**
+     * funkcja renderująca tło gry
+     * @param batch obiekt batch
+     */
     private void renderBackground(SpriteBatch batch){
         float spaceX = 0;
         float spaceY = 0;
@@ -136,6 +178,18 @@ public class Space {
 
     }
 
+    /**
+     * w menu gry, renderuje przyciski.
+     * @param newGameX pozycja X przycisku new game
+     * @param newGameY pozycja Y przycisku new game
+     * @param continueX pozycja X przycisku continue
+     * @param continueY pozycja Y przycisku continue
+     * @param exitX pozycja X przycisku exit
+     * @param exitY pozycja Y przycisku exit
+     * @param width szerokość przycisków
+     * @param height wysokość przycisków
+     * @param batch obiekt batch
+     */
     public void spaceButtonsPlacement(int newGameX, int newGameY, int continueX, int continueY, int exitX, int exitY, int width, int height, SpriteBatch batch){
         if(!gameBackground){
             batch.draw(buttons[0],newGameX,newGameY,width,height);
@@ -147,10 +201,12 @@ public class Space {
         }
         if(atakowana){
             akcja();
-            //System.out.println("Action");
         }
     }
 
+    /**
+     * Generowanie pozycji planet
+     */
     public void generatePlanetPosition(){
         for(int i=0; i<50; i++) {
             int x = (int) (Math.random() * background[1].getRegionWidth());
@@ -225,14 +281,24 @@ public class Space {
         this.player.addPlanet(tablicaX[0],tablicaY[0],1);
     }
 
+    /**
+     * przekazujemy obiekt batch klasy SpriteBatch i tekstury planet do funkcji draw graczy
+     * @param batch obiekt batch
+     */
     private void drawPlanets(SpriteBatch batch){
         if(this.enemy != null)
             this.enemy.draw(batch, this.planets);
         if(this.player != null)
             this.player.draw(batch, this.planets);
-
     }
-    //Sprawdzanie czy planeta zostala nacisnieta
+
+    /**
+     * Sprawdzanie, czy planeta została naciśnięta
+     * @param posX pozycja myszy X
+     * @param posY pozycja myszy Y
+     * @param width
+     * @param height
+     */
     public void checkIfPlanetClicked(int posX, int posY,int width,int height){
 
         this.player.saveGame();
@@ -281,7 +347,6 @@ public class Space {
             if(this.indeksAtakujacej[i] != -1){
                 System.out.println("Indeks atakujacej: "+this.indeksAtakujacej[i]);
                 check = true;
-                atakAkcja = true;
                 break;
             }
         }
