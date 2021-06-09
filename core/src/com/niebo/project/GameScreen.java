@@ -1,12 +1,44 @@
 package com.niebo.project;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+/**
+ * Klasa GameScreen służy jako główna klasa, w której inicjowane są wszystkie ustawienia początkowe okna gry.
+ * ta klasa zajmuje się przyciskami w menu, poruszaniem się po ekranie, zoomowanie itp.
+ */
 public class GameScreen extends InputAdapter implements Screen, InputProcessor {
     //handling graphics
+    /**
+     * @param camera implementuje kamerę do gry
+     * @param menuCamera implementuje kamerę do menu gry
+     * @param WORLD_WIDTH szerokość ekranu
+     * @param WORLD_HEIGHT wysokosc ekranu
+     * @param cameraX położenie horyzontalne kamery
+     * @param cameraY położenie wertykalne kamery
+     * @param zoomAmount zmienna, którą pilnujemy przybliżenie gry
+     * @param goToMenu zmienna, która informuje nas, że nastąpiło przejście do menu
+     * @param prevX zmienna, w której przy przesuwaniu ekranu, zapisywana jest poprzednia pozycja horyzontalna ekranu
+     * @param prevY zmienna, w której przy przesuwaniu ekranu, zapisywana jest poprzednia pozycja wertykalna ekranu
+     * @param continueButtonX przechowuje pozycję X kamery, do której przechodzimy po naciśnięciu escape
+     * @param continueButtonY przechowuje pozycję Y kamery, do której przechodzimy po naciśnięciu escape
+     * @param batch inicjuje partię, która służy do rysowania kształtów na ekranie
+     * @param newGameX pozycja X przycisku new game
+     * @param newGameY pozycja Y przycisku new game
+     * @param continueX pozycja X przycisku continue
+     * @param continueY pozycja Y przycisku continue
+     * @param exitX pozycja X przycisku exit
+     * @param exitY pozycja Y przycisku exit
+     * @param width szerokość przycisków
+     * @param height wysokość przycisków
+     * @param menu tworzy obiekt klasy Menu
+     * @param effectiveViewportWidth szerokość ekranu (szerokość ekranu * zoom)
+     * @param effectiveViewportHeight wysokość ekranu (wysokość ekranu * zoom)
+     * @param gameMusic inicjowanie muzyki do gry
+     */
     OrthographicCamera camera;
     OrthographicCamera menuCamera;
 
@@ -15,8 +47,6 @@ public class GameScreen extends InputAdapter implements Screen, InputProcessor {
 
     private float cameraX = WORLD_WIDTH;
     private float cameraY = WORLD_HEIGHT;
-
-
 
     private float zoomAmount = 10;
 
@@ -39,13 +69,22 @@ public class GameScreen extends InputAdapter implements Screen, InputProcessor {
     float effectiveViewportWidth;
     float effectiveViewportHeight;
 
+    Music gameMusic = Gdx.audio.newMusic(Gdx.files.internal("Space.mp3"));
+
 
     // Functions ====================================================
+
+
+    /**
+     * Konstruktor klasy GameScreen, inicjowana jest tutaj kamera, obiekt klasy Menu, muzyka oraz partia.
+     */
     GameScreen(){
         camera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
         menuCamera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
         menu = new Menu();
-
+        gameMusic.setLooping(true);
+        gameMusic.setVolume(0.12f);
+        gameMusic.play();
         batch = new SpriteBatch();
     }
 
@@ -127,7 +166,6 @@ public class GameScreen extends InputAdapter implements Screen, InputProcessor {
         return super.keyDown(keycode);
     }
 
-    //Tutej zapisywanie
     @Override
     public boolean keyUp(int keycode) {
         if(keycode == Input.Keys.ESCAPE && !menu.menu){
@@ -264,13 +302,6 @@ public class GameScreen extends InputAdapter implements Screen, InputProcessor {
             Gdx.app.exit();
         }
     }
-
-    /*private void touchPlanet(int screenX, int screenY){
-        effectiveViewportWidth = camera.viewportWidth * camera.zoom;
-        effectiveViewportHeight = camera.viewportHeight * camera.zoom;
-        System.out.println( "width"+effectiveViewportWidth+"    height"+effectiveViewportHeight);
-        menu.touchPlanet((screenX + (int) (camera.position.x)) - (int)effectiveViewportWidth/2 , (screenY - (int) camera.position.y) +(int)effectiveViewportHeight/2,(int)camera.position.y,WORLD_HEIGHT);
-    }*/
 
     private void touchPlanet(int screenX, int screenY){
         menu.touchPlanet((screenX + (int) camera.position.x) - 640, (screenY - (int) camera.position.y) +360,(int)camera.position.y,WORLD_HEIGHT);
