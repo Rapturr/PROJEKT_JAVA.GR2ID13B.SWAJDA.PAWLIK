@@ -7,6 +7,9 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+/**
+ * Klasa gracza, przechowuje metody takie, jak zapisywanie i wczytywanie gry, dodawanie graczowi planet.
+ */
 public class Player extends ApplicationAdapter implements TextInputListener{
     private int planetCount;
     Planet planet[];
@@ -14,12 +17,12 @@ public class Player extends ApplicationAdapter implements TextInputListener{
     private boolean myPlayer;
     public String czytam;
     public FileHandle file;
-    private boolean select = false;
-    public int[] planetXPosition = new int[2];
-    public int[] planetYPosition = new int[2];
-    public int index;
     public int iloscPlanet = 0;
 
+    /**
+     * Konstruktor klasy
+     * @param myPlayer mówi, czy jest to gracz, czy przeciwnik
+     */
     public Player(boolean myPlayer) {
         this.planetCount = 50;
         this.planet = new Planet[50];
@@ -30,8 +33,14 @@ public class Player extends ApplicationAdapter implements TextInputListener{
         }
     }
 
+    /**
+     * dodanie planety graczowi
+     * @param tabx pozycja X planety
+     * @param taby pozycja Y planety
+     * @param typ typ planety
+     */
     public void addPlanet(int tabx, int taby, int typ){
-        int i = 0;
+        int i;
         for(i=0; i<planetCount; i++) {
             if (this.planet[i] == null) {
                 this.planet[i] = new Planet(tabx, taby, typ);
@@ -42,8 +51,15 @@ public class Player extends ApplicationAdapter implements TextInputListener{
 
     }
 
+    /**
+     * Dodanie planety, podając technologię zamiast typu(przejmowanie)
+     * @param tabx pozycja X
+     * @param taby pozycja Y
+     * @param tech nr. technologii
+     * @param typ typ (=0)
+     */
     public void addPlanet(int tabx, int taby, int tech, int typ){
-        int i = 0;
+        int i;
         this.planetCount++;
         for(i=0; i<planetCount; i++) {
             if (this.planet[i] == null) {
@@ -71,6 +87,11 @@ public class Player extends ApplicationAdapter implements TextInputListener{
         }
     }
 
+    /**
+     * przekazanie batch do klasy planet
+     * @param batch obiekt batch
+     * @param region tekstury
+     */
     public void draw(SpriteBatch batch, TextureRegion region[]){
         for(int i = 0; i < this.planetCount-1; i++){
             if(i<50)
@@ -82,18 +103,17 @@ public class Player extends ApplicationAdapter implements TextInputListener{
             pl.showPlanetInfo(batch, region);
         }
     }
+
+    /**
+     * Sprawdzanie, czy planeta została kliknięta
+     * @param posX pozycja X myszy
+     * @param posY pozycja Y myszy
+     * @param width Szerokość okna
+     * @param height Wysokość okna
+     * @return zwraca indeks planety
+     */
     //Sprawdzanie czy gracz nacisnal na planete
     public int checkIfClicked(int posX, int posY,int width,int height){
-        int i = new Integer(1);
-        /*for (Planet pl: planet) {
-            if(myPlayer) {
-                if(pl.checkIfClicked(posX, posY, width, height) == 1){
-
-                }
-            }
-            else i = pl.checkIfEnemyClicked(posX,posY, width, height);
-        }*/
-
         for(int j = 0; j < planetCount-1; j++){
             if(j<50)
             if(this.myPlayer && this.planet[j] != null) {
@@ -111,6 +131,13 @@ public class Player extends ApplicationAdapter implements TextInputListener{
         System.out.println("Im returning -1");
         return -1;
     }
+
+    /**
+     * Wybranie planety, oraz zaatakowanie wrogiej
+     * @param number ilość woisk
+     * @param pos indeks planety
+     * @return zwraca liczbę zwróconych woisk lub liczbę atakujących woisk
+     */
     public int selectPlanet(int number, int pos){
         if(pos >= 0){
             if(this.myPlayer && this.planet[pos] != null){
@@ -134,6 +161,11 @@ public class Player extends ApplicationAdapter implements TextInputListener{
         return 0;
     }
 
+    /**
+     * sprawdzanie, czy planeta jest atakowana
+     * @param pos indeks planety
+     * @return zwraca true, jeśli planeta jest atakowana
+     */
     public boolean attack(int pos){
         if(this.planet[pos] != null) {
             return this.planet[pos].isAttack;
@@ -141,6 +173,12 @@ public class Player extends ApplicationAdapter implements TextInputListener{
         return false;
     }
 
+    /**
+     * wykonanie ataku
+     * @param pos indeks planety
+     * @param enemyBarrier wartość bariery planety
+     * @return zwraca true, jesli planeta została zaatakowana
+     */
     public boolean attackMyPl(int pos, int enemyBarrier){
         if(this.myPlayer && this.planet[pos] != null){
             if(enemyBarrier == 0) enemyBarrier += 1;
@@ -153,12 +191,22 @@ public class Player extends ApplicationAdapter implements TextInputListener{
         }
         return false;
     }
+
+    /**
+     * resetuje wartość zmiennej attack planety
+     * @param pos pos indeks planety
+     */
     public void resAttack(int pos){
         if(this.planet[pos] != null && pos >= 0){
             this.planet[pos].isAttack = false;
         }
     }
 
+    /**
+     * zwraca parametr planety
+     * @param pos indeks planety
+     * @return zwraca wartość technologii planety
+     */
     public int tech(int pos){
         if(pos >= 0)
         if(this.planet[pos] != null){
@@ -167,6 +215,11 @@ public class Player extends ApplicationAdapter implements TextInputListener{
         }
         return -1;
     }
+    /**
+     * zwraca parametr planety
+     * @param pos indeks planety
+     * @return zwraca pozycję X planety
+     */
     public int getx(int pos){
         if(this.planet[pos] != null && pos >= 0){
             int x = this.planet[pos].positionx;
@@ -174,6 +227,11 @@ public class Player extends ApplicationAdapter implements TextInputListener{
         }
         return -1;
     }
+    /**
+     * zwraca parametr planety
+     * @param pos indeks planety
+     * @return zwraca pozycję Y planety
+     */
     public int gety(int pos){
         if(this.planet[pos] != null && pos >= 0){
             int x = this.planet[pos].positiony;
@@ -181,12 +239,22 @@ public class Player extends ApplicationAdapter implements TextInputListener{
         }
         return -1;
     }
+
+    /**
+     * usunięcie planety
+     * @param pos indeks planety
+     */
     public void deletePlanet(int pos){
         if(this.planet[pos] != null){
             this.planet[pos] = null;
         }
     }
 
+    /**
+     * Zaznaczenie planety
+     * @param pos indeks planety
+     * @param res reset zaznaczenia
+     */
     public void changePlanetGraphics(int pos, int res){
         if(pos > -1)
             if(this.planet[pos] != null)
@@ -197,26 +265,9 @@ public class Player extends ApplicationAdapter implements TextInputListener{
             }
     }
 
-    public int type(int pos){
-        if(pos >= 0)
-            if(this.planet[pos] != null){
-                int type = this.planet[pos].typ;
-                return type;
-            }
-        return -1;
-    }
-
-    public int checkpos(int x, int y){
-
-        for(int i=0; i<50; i++){
-            if(this.planet[i] != null)
-                if(this.planet[i].positionx == x && this.planet[i].positiony == y){
-                    return i;
-                }
-        }
-        return -1;
-    }
-
+    /**
+     * Funkcja zapisująca grę
+     */
     public void saveGame(){
         if(this.myPlayer)
             file = Gdx.files.local("allyplanets.txt");
@@ -242,6 +293,9 @@ public class Player extends ApplicationAdapter implements TextInputListener{
         }
     }
 
+    /**
+     * Funkcja ładująca grę
+     */
     public void loadGame(){
         String read;
         //loading the planets into the game from internal files
@@ -250,7 +304,7 @@ public class Player extends ApplicationAdapter implements TextInputListener{
         else
             read = Gdx.files.internal("enemyplanets.txt").readString();
         String[] readPos = read.split("\\r?\\n");
-        int x=-1,y=-1,typ=-1;
+        int x=-1,y=-1,typ;
         int planetnr = 0;
         for(int i=0; i< readPos.length; i++){
             if(this.planet[planetnr] == null){
@@ -316,6 +370,10 @@ public class Player extends ApplicationAdapter implements TextInputListener{
         }
     }
 
+    /**
+     * Wpisanie nazwy gracza
+     * @param text wpisany tekst
+     */
     @Override
     public void input(String text) {
         this.playerName = text;
@@ -323,10 +381,14 @@ public class Player extends ApplicationAdapter implements TextInputListener{
         file.writeString(text,false);
     }
 
+    /**
+     * Przy naciśnięciu cancel, odczytana jest poprzednia nazwa gracza
+     */
     @Override
     public void canceled() {
         czytam = Gdx.files.internal("playerName.txt").readString();
         String[] text = czytam.split("\\r?\\n");
         System.out.println(text[0]);
+        this.playerName = text[0];
     }
 }

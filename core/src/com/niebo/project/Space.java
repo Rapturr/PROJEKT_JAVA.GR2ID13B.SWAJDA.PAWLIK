@@ -293,11 +293,11 @@ public class Space {
     }
 
     /**
-     * Sprawdzanie, czy planeta została naciśnięta
+     * Sprawdzanie, czy planeta(nasza i wroga) została naciśnięta
      * @param posX pozycja myszy X
      * @param posY pozycja myszy Y
-     * @param width
-     * @param height
+     * @param width szerokość okna
+     * @param height wysokość okna
      */
     public void checkIfPlanetClicked(int posX, int posY,int width,int height){
 
@@ -341,6 +341,9 @@ public class Space {
         }
     }
 
+    /**
+     * wykonuje atak na wrogą planetę
+     */
     private void akcja(){
         boolean check = false;
         for(int i=0; i<49; i++){
@@ -350,7 +353,7 @@ public class Space {
                 break;
             }
         }
-        //Przywracanie armii graczowi!
+        //Przywracanie armii graczowi!(nie dziali)
         if(this.indeksAtakowanej>=0)
         if(check) {
             for(int i=0; i<49; i++){
@@ -401,6 +404,9 @@ public class Space {
         }
     }
 
+    /**
+     * Załadowanie pozycji planet z pliku
+     */
     public void loadPlanetPosition(){
         if(this.player == null){
             this.player = new Player(true);
@@ -412,6 +418,9 @@ public class Space {
         this.enemy.loadGame();
     }
 
+    /**
+     * usunięcie atlasu tekstur.
+     */
     public void cleanup(){
         this.textureAtlas.dispose();
     }

@@ -9,34 +9,104 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.Random;
 
+/**
+ * Klasa planety, przechowuje informacje o planecie
+ */
 public class Planet implements Input.TextInputListener {
     //Statystyki planety
+    /**
+     * Bariera planety
+     */
     public int barrierPower;
+    /**
+     * Typ planety
+     */
     public int typ;
     //zasoby zbierane na planecie
+    /**
+     * Ilość surowca kryptonite
+     */
     public float kryptonite;
+    /**
+     * Ilość surowca spaceStone
+     */
     public float spaceStone;
+    /**
+     * Ilość surowca roadMilk
+     */
     public float roadMilk;
+    /**
+     * wartość technologii planety
+     */
     public int technology;
+    /**
+     * ilość surowca spaceCoins
+     */
     public float spaceCoins;
+    /**
+     * Ilość jednostek, jakich posiada planeta
+     */
     public int totalArmySize;
+    /**
+     * pozycja planety X
+     */
     public int positionx;
+    /**
+     * pozycja planety Y
+     */
     public int positiony;
+    /**
+     * pomocnicza zmienna, mówi o tym, czy mają się pokazywać informacje o planecie
+     */
     public boolean showInfo;
+    /**
+     * mówi o tym czy jest to planeta przeciwnika
+     */
     public boolean enemy;
-    private int width;
-    private int height;
+    /**
+     * pozycja okna X
+     */
     private int windowPosX;
+    /**
+     * pozycja okna Y
+     */
     private int windowPosY;
+    /**
+     * czcionka, służy do wypisywania wartości zasobów planety
+     */
     private BitmapFont font;
+    /**
+     * czas systemowy
+     */
     private long startTime = System.currentTimeMillis();
+    /**
+     * pomocnicza zmienna, pomaga w dodawaniu zasobów planety
+     */
     private long oldTime = 1;
+    /**
+     * pomocnicza zmienna, pomaga w dodawaniu zasobów planety
+     */
     private boolean add = false;
     //System.out.println("Time elapsed in seconds = "+((System.currentTimeMillis() - startTime)/1000));
+    /**
+     * ilość woisk atakujących
+     */
     public int attack;
+    /**
+     * mówi o tym, czy planeta jest atakowana
+     */
     public boolean isAttack = false;
+    /**
+     * mówi o tym, czy planeta jest zaznaczona
+     */
     public boolean zaznaczona = false;
 
+    /**
+     * Konstruktor planet
+     * @param positionx pozycja X planety
+     * @param positiony pozycja Y planety
+     * @param typ tup planety
+     */
     public Planet(int positionx, int positiony, int typ){
         this.positionx = positionx;
         this.positiony = positiony;
@@ -46,20 +116,10 @@ public class Planet implements Input.TextInputListener {
         font = new BitmapFont();
         font.setColor(Color.WHITE);
     }
-    public Planet(int positionx, int positiony, int typ, boolean y){
-        this.positionx = positionx;
-        this.positiony = positiony;
-        this.typ = typ;
-        this.showInfo = false;
-        font = new BitmapFont();
-        font.setColor(Color.WHITE);
-    }
 
-    public void loadStats(int technology,int kryptonite,int spaceStone,
-            int roadMilk,int spaceCoins,int totalArmySize,int barrierPower){
-
-    }
-
+    /**
+     * nadanie statystyk planet
+     */
     private void giveStats(){
         Random nazwa = new Random();
         this.kryptonite = nazwa.nextInt(10)+1;
@@ -70,6 +130,10 @@ public class Planet implements Input.TextInputListener {
         giveBarrier();
         giveArmy();
     }
+
+    /**
+     * nadaje poziom technologii
+     */
     private void giveTech(){
         if(this.typ == 1)
             this.technology = 1;
@@ -82,12 +146,20 @@ public class Planet implements Input.TextInputListener {
         else
             this.technology = 10;
     }
+
+    /**
+     * nadaje poziom bariery
+     */
     private void giveBarrier(){
         if(this.typ != 8)
             this.barrierPower = this.technology*5;
         else
             this.barrierPower = 60;
     }
+
+    /**
+     * daje planecie początkową ilość armii
+     */
     private void giveArmy(){
         if (this.typ == 1)
             this.totalArmySize = 100;
@@ -102,6 +174,11 @@ public class Planet implements Input.TextInputListener {
     }
 
 
+    /**
+     * położenie planety na mapie
+     * @param batch obiekt batch
+     * @param region tekstury
+     */
     public void draw(SpriteBatch batch, TextureRegion region[]){
         if(!zaznaczona){
             if(this.typ == 1)batch.draw(region[0],positionx,positiony,100,100);
@@ -126,21 +203,21 @@ public class Planet implements Input.TextInputListener {
         checkTimer();
     }
 
+    /**
+     * Sprawdzanie czasu, nadawanie surowców
+     */
     private void checkTimer() {
         long currentTime = (System.currentTimeMillis() - startTime) / 1000;
             if (add){
                 if (currentTime % 2 == 0 && this.kryptonite < 1200) {
                     this.kryptonite += ((float) this.technology) / 2;
-                    this.kryptonite += ((float) this.technology) * 5;
                     add = false;
                 }
                 if (currentTime % 4 == 0 && this.spaceStone < 1200) {
                     this.spaceStone += ((float) this.technology) / 2;
-                    this.spaceStone += ((float) this.technology) * 5;
                 }
                 if (currentTime % 6 == 0 && this.roadMilk < 1200) {
                     this.roadMilk += ((float) this.technology) /2;
-                    this.roadMilk += ((float) this.technology) *20;
                 }
                 if(currentTime % 1000000 == 0){
                     this.spaceCoins++;
@@ -152,6 +229,16 @@ public class Planet implements Input.TextInputListener {
             else
                 this.oldTime = currentTime+1;
     }
+
+    /**
+     * sprawdzanie, czy planeta została nacisnięta, jeśli okienko informacji jest włączone, to przekazuje parametry do
+     * odpowiedniej funkcji, enemy = false
+     * @param posX pozycja myszy X
+     * @param posY pozycja myszy Y
+     * @param width wysokość okna
+     * @param height szerokość okna
+     * @return zwraca 1 jeśli włączy okno, 2 jeśli okno interakcji jest już włączone
+     */
     //Sprawdzanie nacisniecia na planete
     public int checkIfClicked(int posX,int posY, int width,int height){
         if(this.showInfo){
@@ -164,6 +251,15 @@ public class Planet implements Input.TextInputListener {
         }
         return 2;
     }
+    /**
+     * sprawdzanie, czy planeta została nacisnięta, jeśli okienko informacji jest włączone, to przekazuje parametry do
+     * odpowiedniej funkcji, enemy = true
+     * @param posX pozycja myszy X
+     * @param posY pozycja myszy Y
+     * @param width wysokość okna
+     * @param height szerokość okna
+     * @return zwraca 1 jeśli włączy okno, 2 jeśli okno interakcji jest już włączone
+     */
     public int checkIfEnemyClicked(int posX,int posY, int width,int height){
         if(this.showInfo){
             windowInteractions(posX,posY,width,height);
@@ -176,6 +272,11 @@ public class Planet implements Input.TextInputListener {
         return 2;
     }
 
+    /**
+     * Wypisanie informacji o planecie(zasoby, armia)
+     * @param batch obiekt batch
+     * @param region tekstury
+     */
     public void showPlanetInfo(SpriteBatch batch, TextureRegion region[]){
         if(this.showInfo && !this.enemy){
             if(positiony+450 > 2160 && positionx+400 <= 3840){
@@ -225,8 +326,14 @@ public class Planet implements Input.TextInputListener {
             showStats(batch);
     }
 
+    /**
+     * interakcje w oknie informacji
+     * @param posX pozycja X myszy
+     * @param posY pozycja Y myszy
+     * @param width szerokość okna
+     * @param height wysokość okna
+     */
     private void windowInteractions(int posX,int posY, int width,int height){
-        this.height = height;
         if(this.enemy){
             if(posX > this.windowPosX && posX <= this.windowPosX+300 && posY < height - this.windowPosY && posY >= height - this.windowPosY-250){
                 //System.out.println("posx "+posX+"   windowposx  "+this.windowPosX+"  posy "+posY+"   height - windowPosY "+(height - this.windowPosY));
@@ -287,6 +394,10 @@ public class Planet implements Input.TextInputListener {
         }
     }
 
+    /**
+     * Wypisanie zasobów planety: armia, technologia, zasoby
+     * @param batch obiekt batch
+     */
     private void showStats(SpriteBatch batch){
         if(this.showInfo){
             if(this.enemy){
@@ -307,6 +418,11 @@ public class Planet implements Input.TextInputListener {
         }
     }
 
+    /**
+     * odjęcie armii planety, jeśli została zaatakowana
+     * @param number ilość wrogich jednostek
+     * @return zwraca moc bariery, lub zero jeśli ilość jednostek jest mniejsza od 5
+     */
     public int zaatakowana(int number){
         this.totalArmySize = this.totalArmySize - (number - (number/this.barrierPower));
         if(this.totalArmySize > 5)
@@ -315,12 +431,20 @@ public class Planet implements Input.TextInputListener {
             return 0;
     }
 
+    /**
+     * input użytkownika. Użytkownik wpisuje tutaj, iloma jednostkami chce zaatakować
+     * @return zwraca wybraną ilość jednostek
+     */
     public int attackPlanet(){
         Gdx.input.getTextInput(this, "Attack", "", "Podaj ilosc woiska");
         System.out.println("Liczba woisk = "+this.attack);
         return this.attack;
     }
 
+    /**
+     * tu odbywa się wybranie przez użytkownika ilości woisk
+     * @param text wpisany tekst
+     */
     @Override
     public void input(String text) {
         int a = Integer.parseInt(text);
