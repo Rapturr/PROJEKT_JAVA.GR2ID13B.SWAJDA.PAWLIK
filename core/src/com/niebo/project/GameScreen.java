@@ -4,7 +4,6 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
  * Klasa GameScreen służy jako główna klasa, w której inicjowane są wszystkie ustawienia początkowe okna gry.
@@ -262,11 +261,17 @@ public class GameScreen extends InputAdapter implements Screen, InputProcessor {
      */
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        /*float xpos = (screenX * camera.zoom) - (screenX / camera.zoom) + screenX;
-        float ypos = (screenY * camera.zoom) - ( screenY / camera.zoom) + screenY;
+        /*//float xpos = (screenX * camera.zoom) - (screenX / camera.zoom) + screenX;
+        //float ypos = (screenY * camera.zoom) - ( screenY / camera.zoom) + screenY;
+        float xpos = screenX * (camera.zoom);
+        float ypos = screenY * (camera.zoom);
+        if(camera.zoom != 1){
+            xpos += (screenX * (2-camera.zoom));
+            ypos += (screenY * (2-camera.zoom));
+        }
         screenY = (int)ypos;
         screenX = (int)xpos;
-        System.out.println("pozycja "+ypos+"  camera zoom "+camera.zoom+"  x "+screenY);*/
+        System.out.println("pozycja "+screenY+"  camera zoom "+camera.zoom+"  x "+screenX);*/
 
         if(menu.menu && button == Input.Buttons.LEFT)
             menuButtons(screenX, screenY);
@@ -407,6 +412,6 @@ public class GameScreen extends InputAdapter implements Screen, InputProcessor {
      * @param screenY pozycja Y
      */
     private void touchPlanet(int screenX, int screenY){
-        menu.touchPlanet((screenX + (int) camera.position.x) - 640, (screenY - (int) camera.position.y) +360,(int)camera.position.y,WORLD_HEIGHT);
+        menu.touchPlanet((screenX + (int) camera.position.x) - 640, (screenY - (int) camera.position.y) +360, WORLD_HEIGHT);
     }
 }

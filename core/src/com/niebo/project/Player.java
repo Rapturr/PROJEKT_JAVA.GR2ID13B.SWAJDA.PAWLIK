@@ -12,9 +12,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 public class Player extends ApplicationAdapter implements TextInputListener{
     private int planetCount;
-    Planet planet[];
+    Planet[] planet;
     public String playerName;
-    private boolean myPlayer;
+    private final boolean myPlayer;
     public String czytam;
     public FileHandle file;
     public int iloscPlanet = 0;
@@ -60,6 +60,7 @@ public class Player extends ApplicationAdapter implements TextInputListener{
      */
     public void addPlanet(int tabx, int taby, int tech, int typ){
         int i;
+        System.out.println(typ);
         this.planetCount++;
         for(i=0; i<planetCount; i++) {
             if (this.planet[i] == null) {
@@ -92,7 +93,7 @@ public class Player extends ApplicationAdapter implements TextInputListener{
      * @param batch obiekt batch
      * @param region tekstury
      */
-    public void draw(SpriteBatch batch, TextureRegion region[]){
+    public void draw(SpriteBatch batch, TextureRegion[] region){
         for(int i = 0; i < this.planetCount-1; i++){
             if(i<50)
             if(this.planet[i] != null)
@@ -108,22 +109,21 @@ public class Player extends ApplicationAdapter implements TextInputListener{
      * Sprawdzanie, czy planeta została kliknięta
      * @param posX pozycja X myszy
      * @param posY pozycja Y myszy
-     * @param width Szerokość okna
      * @param height Wysokość okna
      * @return zwraca indeks planety
      */
     //Sprawdzanie czy gracz nacisnal na planete
-    public int checkIfClicked(int posX, int posY,int width,int height){
+    public int checkIfClicked(int posX, int posY, int height){
         for(int j = 0; j < planetCount-1; j++){
             if(j<50)
             if(this.myPlayer && this.planet[j] != null) {
-                if(this.planet[j].checkIfClicked(posX, posY, width, height) == 1){
+                if(this.planet[j].checkIfClicked(posX, posY, height) == 1){
                     //System.out.println("I'm returning: "+j);
                     return j;
                 }
             }
             else if(this.planet[j] != null)
-                if(this.planet[j].checkIfEnemyClicked(posX,posY, width, height) == 1){
+                if(this.planet[j].checkIfEnemyClicked(posX,posY, height) == 1){
                 //System.out.println("I'm returning: "+j);
                 return j;
             }
@@ -197,7 +197,7 @@ public class Player extends ApplicationAdapter implements TextInputListener{
      * @param pos pos indeks planety
      */
     public void resAttack(int pos){
-        if(this.planet[pos] != null && pos >= 0){
+        if(this.planet[pos] != null){
             this.planet[pos].isAttack = false;
         }
     }
@@ -210,8 +210,7 @@ public class Player extends ApplicationAdapter implements TextInputListener{
     public int tech(int pos){
         if(pos >= 0)
         if(this.planet[pos] != null){
-        int tech = this.planet[pos].technology;
-        return tech;
+            return this.planet[pos].technology;
         }
         return -1;
     }
@@ -221,9 +220,8 @@ public class Player extends ApplicationAdapter implements TextInputListener{
      * @return zwraca pozycję X planety
      */
     public int getx(int pos){
-        if(this.planet[pos] != null && pos >= 0){
-            int x = this.planet[pos].positionx;
-            return x;
+        if(this.planet[pos] != null){
+            return this.planet[pos].positionx;
         }
         return -1;
     }
@@ -233,9 +231,8 @@ public class Player extends ApplicationAdapter implements TextInputListener{
      * @return zwraca pozycję Y planety
      */
     public int gety(int pos){
-        if(this.planet[pos] != null && pos >= 0){
-            int x = this.planet[pos].positiony;
-            return x;
+        if(this.planet[pos] != null){
+            return this.planet[pos].positiony;
         }
         return -1;
     }
@@ -325,10 +322,10 @@ public class Player extends ApplicationAdapter implements TextInputListener{
         if(this.myPlayer){
             read = Gdx.files.internal("allyresources.txt").readString();
             readPos = read.split("\\r?\\n");
-            int technology=-1;
-            float totalArmySize=-1,barrierPower = -1;
-            float kryptonite=-1,spaceStone=-1;
-            float roadMilk=-1,spaceCoins=-1;
+            int technology;
+            float totalArmySize,barrierPower;
+            float kryptonite,spaceStone;
+            float roadMilk,spaceCoins;
 
             planetnr = 0;
             for(int i=0; i< readPos.length; i++){

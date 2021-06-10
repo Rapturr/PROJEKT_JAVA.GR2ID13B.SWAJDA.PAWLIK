@@ -85,15 +85,11 @@ public class Menu {
                 this.bg.generatePlanetPosition();
             }
         else if(continueGame){
-            if(this.bg == null){
-                this.bg = new Space(1);
-                this.bg.loadPlanetPosition();
-            }
-            else{
+            if (this.bg != null) {
                 this.bg.cleanup();
-                this.bg = new Space(1);
-                this.bg.loadPlanetPosition();
             }
+            this.bg = new Space(1);
+            this.bg.loadPlanetPosition();
         }
     }
 
@@ -125,11 +121,10 @@ public class Menu {
      * przekazywanie pozycji myszy, w celu sprawdzenia, czy najechała ona na obiekt na mapie
      * @param screenX pozycja myszy X
      * @param screenY pozycja myszy Y
-     * @param width szerokość ekranu
      * @param height wysokość ekranu
      */
-    public void touchPlanet(int screenX, int screenY,int width,int height){
-        this.bg.checkIfPlanetClicked(screenX, screenY, width, height);
+    public void touchPlanet(int screenX, int screenY, int height){
+        this.bg.checkIfPlanetClicked(screenX, screenY, height);
     }
     /**
      * usuwanie obiektu bg klasy Space

@@ -1,12 +1,8 @@
 package com.niebo.project;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
-import javax.swing.*;
 
 /**
  * Space to klasa, w której znajdują się akcje związane z obiektami na mapie (zaznaczanie, atakowanie itd.)
@@ -39,15 +35,15 @@ public class Space {
     /**
      * tablica generowanych pozycji X planet
      */
-    private int[] tablicaX;
+    private final int[] tablicaX;
     /**
      * tablica generowanych pozycji Y planet
      */
-    private int[] tablicaY;
+    private final int[] tablicaY;
     /**
      * tablica generowanych typów planet
      */
-    private int[] tablicaPlanet;
+    private final int[] tablicaPlanet;
     /**
      * zmienna, mówiąca czy ma być wykonywany atak
      */
@@ -76,10 +72,6 @@ public class Space {
      * ilość woisk, jaką gracz wpisał
      */
     private int iloscWoiskAtakujacych = 0;
-    /**
-     * zmienna, przechowuje informacje o ataku(czy przeciwnik ma jeszcze jakieś woiska, czy został podbity)
-     */
-    private int liczba = -1;
 
 
     /**
@@ -296,17 +288,16 @@ public class Space {
      * Sprawdzanie, czy planeta(nasza i wroga) została naciśnięta
      * @param posX pozycja myszy X
      * @param posY pozycja myszy Y
-     * @param width szerokość okna
      * @param height wysokość okna
      */
-    public void checkIfPlanetClicked(int posX, int posY,int width,int height){
+    public void checkIfPlanetClicked(int posX, int posY, int height){
 
         this.player.saveGame();
         this.enemy.saveGame();
 
         int p0, p1;
-        p0 = this.player.checkIfClicked(posX, posY,width,height);
-        p1 = this.enemy.checkIfClicked(posX, posY,width,height);
+        p0 = this.player.checkIfClicked(posX, posY, height);
+        p1 = this.enemy.checkIfClicked(posX, posY, height);
         if(p0 == -1 && p1 == -1){
             for(int i = 0; i<49; i++)
                 if(this.indeksAtakujacej[i] >= 0)
@@ -335,9 +326,6 @@ public class Space {
             }
             enemy.changePlanetGraphics(this.indeksAtakowanej,2);
 
-            /*if(this.indeksAtakowanej >= 0) {
-                atakowana = this.enemy.attack(p1);
-            }*/
         }
     }
 
@@ -360,9 +348,9 @@ public class Space {
                 if(this.indeksAtakujacej[i]>-1)
                     this.iloscWoiskAtakujacych += this.player.selectPlanet(0, this.indeksAtakujacej[i]);
             }
-            this.liczba = this.enemy.selectPlanet(iloscWoiskAtakujacych, indeksAtakowanej);
+            int liczba = this.enemy.selectPlanet(iloscWoiskAtakujacych, indeksAtakowanej);
 
-            if(this.liczba == 0){
+            if(liczba == 0){
                 int tech = this.enemy.tech(indeksAtakowanej);
                 int x = this.enemy.getx(indeksAtakowanej);
                 int y = this.enemy.gety(indeksAtakowanej);
@@ -390,8 +378,8 @@ public class Space {
             }
             boolean playerArmyRestored = false;
             for (int j = 0; j < 49; j++) {
-                if(this.indeksAtakujacej[j] != -1 && this.liczba > -1){
-                    playerArmyRestored = this.player.attackMyPl(indeksAtakujacej[j], this.liczba);
+                if(this.indeksAtakujacej[j] != -1 && liczba > -1){
+                    playerArmyRestored = this.player.attackMyPl(indeksAtakujacej[j], liczba);
                 }
                 this.indeksAtakujacej[j] = -1;
             }

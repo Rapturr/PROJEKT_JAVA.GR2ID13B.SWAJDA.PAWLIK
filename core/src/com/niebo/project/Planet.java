@@ -74,7 +74,7 @@ public class Planet implements Input.TextInputListener {
     /**
      * czcionka, służy do wypisywania wartości zasobów planety
      */
-    private BitmapFont font;
+    private final BitmapFont font;
     /**
      * czas systemowy
      */
@@ -179,7 +179,7 @@ public class Planet implements Input.TextInputListener {
      * @param batch obiekt batch
      * @param region tekstury
      */
-    public void draw(SpriteBatch batch, TextureRegion region[]){
+    public void draw(SpriteBatch batch, TextureRegion[] region){
         if(!zaznaczona){
             if(this.typ == 1)batch.draw(region[0],positionx,positiony,100,100);
             else if(this.typ == 2)batch.draw(region[1],positionx,positiony,100,100);
@@ -235,14 +235,13 @@ public class Planet implements Input.TextInputListener {
      * odpowiedniej funkcji, enemy = false
      * @param posX pozycja myszy X
      * @param posY pozycja myszy Y
-     * @param width wysokość okna
      * @param height szerokość okna
      * @return zwraca 1 jeśli włączy okno, 2 jeśli okno interakcji jest już włączone
      */
     //Sprawdzanie nacisniecia na planete
-    public int checkIfClicked(int posX,int posY, int width,int height){
+    public int checkIfClicked(int posX, int posY, int height){
         if(this.showInfo){
-            windowInteractions(posX,posY,width,height);
+            windowInteractions(posX,posY, height);
         }
         else if(posX > positionx && posX <= positionx+100 && posY <  height - positiony && posY >= height - positiony-100){
             showInfo = true;
@@ -256,13 +255,12 @@ public class Planet implements Input.TextInputListener {
      * odpowiedniej funkcji, enemy = true
      * @param posX pozycja myszy X
      * @param posY pozycja myszy Y
-     * @param width wysokość okna
      * @param height szerokość okna
      * @return zwraca 1 jeśli włączy okno, 2 jeśli okno interakcji jest już włączone
      */
-    public int checkIfEnemyClicked(int posX,int posY, int width,int height){
+    public int checkIfEnemyClicked(int posX, int posY, int height){
         if(this.showInfo){
-            windowInteractions(posX,posY,width,height);
+            windowInteractions(posX,posY, height);
         }
         else if(posX > positionx && posX <= positionx+100 && posY <  height - positiony && posY >= height - positiony-100){
             showInfo = true;
@@ -277,7 +275,7 @@ public class Planet implements Input.TextInputListener {
      * @param batch obiekt batch
      * @param region tekstury
      */
-    public void showPlanetInfo(SpriteBatch batch, TextureRegion region[]){
+    public void showPlanetInfo(SpriteBatch batch, TextureRegion[] region){
         if(this.showInfo && !this.enemy){
             if(positiony+450 > 2160 && positionx+400 <= 3840){
                 batch.draw(region[8],positionx+100,positiony-450,300,450);
@@ -300,7 +298,7 @@ public class Planet implements Input.TextInputListener {
                 this.windowPosY = positiony;
             }
         }
-        else if(this.showInfo && this.enemy){
+        else if(this.showInfo){
             if(positiony+450 > 2160 && positionx+400 <= 3840){
                 batch.draw(region[9],positionx+100,positiony-450,300,250);
                 this.windowPosX = positionx+100;
@@ -330,10 +328,9 @@ public class Planet implements Input.TextInputListener {
      * interakcje w oknie informacji
      * @param posX pozycja X myszy
      * @param posY pozycja Y myszy
-     * @param width szerokość okna
      * @param height wysokość okna
      */
-    private void windowInteractions(int posX,int posY, int width,int height){
+    private void windowInteractions(int posX, int posY, int height){
         if(this.enemy){
             if(posX > this.windowPosX && posX <= this.windowPosX+300 && posY < height - this.windowPosY && posY >= height - this.windowPosY-250){
                 //System.out.println("posx "+posX+"   windowposx  "+this.windowPosX+"  posy "+posY+"   height - windowPosY "+(height - this.windowPosY));

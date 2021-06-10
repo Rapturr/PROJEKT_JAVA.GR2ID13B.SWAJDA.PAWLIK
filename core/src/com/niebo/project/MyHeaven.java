@@ -7,7 +7,7 @@ import com.badlogic.gdx.Game;
  */
 public class MyHeaven extends Game {
 	/**
-	 * @param gameScreen obiekt klasy GameScreen
+	 * gameScreen obiekt klasy GameScreen
 	 */
 	GameScreen gameScreen;
 
